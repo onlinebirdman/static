@@ -1,0 +1,193 @@
+<html><head>
+  <meta charset="utf-8">
+  <title>国家反诈中心APP下载页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+  <script src="https://webapi.amap.com/loader.js"></script>
+
+  <style type="text/css">
+          *{
+              font-family: 'Microsoft YaHei'
+          }
+
+          .download {
+              display: block;
+              height: 2.6em;
+              line-height: 45px;
+              width: 90%;
+              background: #05c25e;
+              text-align: center;
+              margin: 70px auto 20px auto;
+              border-radius: 10px;
+              color: #fff;
+          }
+          .title{
+              margin-top: 3px;
+              color:#000;
+              font-size: 16px;
+          }
+    .bg-container {
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .bg-container img {
+      height: 100px;
+      width: 100px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="bg-container">
+    <img src="https://testgzh.wtw678.net/qr/img/app-icon.png" style="border-radius: 17px">
+    <div class="title">国家反诈中心</div>
+  </div>
+  <div id="">
+    <div id="download" class="download" onclick="download()">下载</div>
+    <div style="text-align:center;color: #000;font-size: 16px;">下载安装完成后，请选择 <div style="margin:10px ;color: #ea2626;font-weight: bold;font-size: 1.2em">“广东省-云浮市-新兴县”</div>快速注册，注册成功选择<span style="color: red">“继续完善”</span>，<br>填写<span style="color: red">“详细地址”</span>并完成<span style="color: red">“人脸识别”</span>，开启预警，便于警方第一时间帮助您拦截各类诈骗。</div>
+
+      </div>
+<!--	<div id='spin' style="position: absolute;width: 100vw;height: 100vh;background: #00000033;top: 0;left:0">-->
+
+<!--		<div style="background:#00000099;text-align:center;border-radius: 10px;padding: 30px 50px;;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);color: white">定位中... </div>-->
+<!--	</div>-->
+
+<script type="text/javascript">
+
+  var iosLinkUrl = "https://apps.apple.com/cn/app/%E5%9B%BD%E5%AE%B6%E5%8F%8D%E8%AF%88%E4%B8%AD%E5%BF%83/id1552823102"
+  var androidLinkurl = "https://a.app.qq.com/o/simple.jsp?pkgname=com.hicorenational.antifraud"
+
+  var u = navigator.userAgent,
+      isAndroid, isIOS
+  let position={lng:null,lat:null}
+
+  let search=location.search.slice(1,location.search.length);
+  if(search.indexOf('openid')!=-1){
+    let item=search.split('&')
+    item.forEach(v=>{
+      if(v.indexOf('openid')!=-1){
+        localStorage.setItem("tjopenid",v.split('=')[1]);
+      }
+
+
+    })
+
+    location.href=location.href.split('?')[0]
+
+
+  }else if(search.indexOf('id')!=-1){
+    let item=search.split('&')
+    item.forEach(v=>{
+      if(v.indexOf('id')!=-1){
+        localStorage.setItem('tjewmid',v.split('=')[1])
+      }
+
+    })
+    let url='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5f7778e3a50c7db3&redirect_uri=https://testgzh.wtw678.net/fzpApp/app/official/account/authorization&response_type=code&scope=snsapi_userinfo&state=https://testgzh.wtw678.net/qr/index.html#wechat_redirect'
+    location.href=url
+  }else{
+    // getWechatSign(location.href.split('?')[0]).then(v=>{
+    //   wx.config({
+    //     debug: false,
+    //     appId: v.data.data["appid"],
+    //     nonceStr: v.data.data["nonceStr"],
+    //     signature: v.data.data["signature"],
+    //     timestamp: v.data.data["timestamp"],
+    //     jsApiList: ['getLocation', 'closeWindow']
+    //   })
+
+    // })
+
+
+
+  }
+
+
+
+
+
+
+
+  function getWechatSign(url) {
+    let action = `https://testgzhapi.wtw678.net:9021/getJsSDKSignature`
+    // return axios.get(`${action}?url=${url}`)
+
+  }
+  let isNanshan=false;
+  wx.ready(()=>{
+    wx.getLocation({
+      type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+      success: function (res) {
+        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+        // AMapLoader.load({ //首次调用 load
+        //   key:'b8b874edfee56ce1bc4213d152a786cb',//首次load key为必填
+        //   version:'2.0',
+        //   plugins:['AMap.Scale','AMap.Geocoder']
+        // }).then((AMap)=>{
+        //   var geocoder = new AMap.Geocoder({
+        //     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+        //   })
+        //   var lnglat = [longitude, latitude]
+        //   document.querySelector('#spin').style.display='none'
+        //   geocoder.getAddress(lnglat, (status, result) => {
+        //     if (status === 'complete' && result.info === 'OK') {
+
+        //       if (result.regeocode.addressComponent.district == '南山区') {
+        //         isNanshan=true
+        //       } else {
+        //         // alert('仅限南山区用户使用')
+        //         // wx.closeWindow()
+
+        //       }
+
+        //       // result为对应的地理位置详细信息
+        //     } else {
+        //       // alert('仅限南山区用户使用')
+        //       // wx.closeWindow()
+        //     }
+        //   })
+
+        // }).catch((e)=>{
+        //   console.error(e);
+        // });
+      },
+      error:function(res){
+      },
+
+    });
+
+  })
+  function download() {
+    let p= {
+      openIdMd5:localStorage.getItem('tjopenid'),
+      id:localStorage.getItem('tjewmid')
+    }
+    if(localStorage.getItem('tjopenid')&&localStorage.getItem('tjewmid')){
+      // axios.post("https://testgzh.wtw678.net/fzpApp/app/save/tj",p).then((res) =>{
+
+      //     })
+    }
+
+    isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端
+    isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+    var link = isIOS ? iosLinkUrl : androidLinkurl
+    console.log('下载')
+
+    setTimeout(()=>{
+      location.href = link
+
+    },500)
+  }
+
+  function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    if (r != null) return unescape(r[2]);
+    return null; //返回参数值
+  }
+</script></body></html>
